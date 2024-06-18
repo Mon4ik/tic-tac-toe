@@ -2,7 +2,7 @@
 
 Basic tic-tac-toe, but you can have only 3 symbols. Older ones will disappear
 
-![Showcase of program](docs/showcase.mp4)
+![Showcase of program](docs/showcase.gif)
 
 ## Installation
 
