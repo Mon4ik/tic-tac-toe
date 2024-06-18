@@ -22,6 +22,10 @@ mod pos2;
 mod utils;
 mod engine;
 
+const CELL_WIDTH: u16 = 13;
+const CELL_HEIGHT: u16 = 7;
+
+
 fn main() -> Result<()> {
     stdout().execute(EnterAlternateScreen)?;
     enable_raw_mode()?;
@@ -152,8 +156,8 @@ impl App {
     }
 
     fn ui(&self, frame: &mut Frame) {
-        let table_width: u16 = 13 * 3;
-        let table_height: u16 = 7 * 3;
+        let table_width: u16 = CELL_WIDTH * 3 + 2 + 2;
+        let table_height: u16 = CELL_HEIGHT * 3 + 2 + 2;
 
         let layout = Layout::default()
             .direction(Direction::Vertical)
@@ -197,10 +201,12 @@ impl App {
         let table = Layout::default()
             .direction(Direction::Vertical)
             .constraints([
-                Constraint::Fill(1),
-                Constraint::Fill(1),
-                Constraint::Fill(1),
+                Constraint::Length(CELL_HEIGHT),
+                Constraint::Length(CELL_HEIGHT),
+                Constraint::Length(CELL_HEIGHT),
             ])
+            .spacing(1)
+            .margin(1)
             .split(rect);
 
         let mut rows: Vec<Rc<[Rect]>> = vec![];
@@ -210,10 +216,11 @@ impl App {
                 Layout::default()
                     .direction(Direction::Horizontal)
                     .constraints([
-                        Constraint::Fill(1),
-                        Constraint::Fill(1),
-                        Constraint::Fill(1),
+                        Constraint::Length(CELL_WIDTH),
+                        Constraint::Length(CELL_WIDTH),
+                        Constraint::Length(CELL_WIDTH),
                     ])
+                    .spacing(1)
                     .split(table[i])
             );
         }
@@ -240,7 +247,8 @@ impl App {
                         .symbol(symbol)
                         .is_dying(is_dying)
                         .is_highlighted(self.highlighting.contains(&current_pos))
-                        .selected(self.state == AppState::Game && self.selection == current_pos),
+                        .selected(self.state == AppState::Game && self.selection == current_pos)
+                        .position(current_pos),
                     rows[y][x],
                 );
             }

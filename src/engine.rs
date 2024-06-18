@@ -73,7 +73,11 @@ impl Engine {
 
     pub fn symbols_equal<'a>(a: &'a str, b: &'a str, c: &'a str) -> Option<&'a str> {
         if a == b && b == c {
-            Some(a)
+            if a != " " {
+                Some(a.clone())
+            } else {
+                None
+            }
         } else {
             None
         }
